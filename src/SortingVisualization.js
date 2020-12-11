@@ -1,24 +1,31 @@
 import React, { Component } from 'react';
-import {mergeSort} from './SortingAlgoAnimations/mergeSort';
+import {mergeSortHelper} from './SortingAlgoAnimations/mergeSort';
+import {mergeSort} from './SortingAlgos/mergeSort';
 import {insertionSort} from './SortingAlgoAnimations/insertionSort';
 import './SortingVisualization.css';
 
 export class SortingVisualization extends Component {
     state = {
-        array : [],
-        arraySize: 100
+        array : [38,27,43,3,9,82,10],
+        arraySize: 7
     }
-
+    //arraySize usually 100,
     componentDidMount(){
-        this.resetArray()
+        //this.resetArray()
     }
 
     resetArray = () => {
+        //reset array values
         const array = [];
         for(let i =0; i<this.state.arraySize; i++){
             array.push(this.getRandomInt(300));
         }
         this.setState({array: array})
+        //reset color of bars
+        const arrayBars = document.getElementsByClassName('array-bar');
+        for (let i=0; i<arrayBars.length; i++){
+            arrayBars[i].style.backgroundColor = '#00BFFF';
+        }
     }
 
     getRandomInt = (max) => {
@@ -31,10 +38,8 @@ export class SortingVisualization extends Component {
         const arrayBars = document.getElementsByClassName('array-bar');
         animations.forEach((obj, index) => {
             //current vs predecessor
-            const currBarIndex = obj.curr[0];
-            const predBarIndex = obj.pred[0];
-            const currBarStyle = arrayBars[currBarIndex].style;
-            const predBarStyle = arrayBars[predBarIndex].style;
+            const currBarStyle = arrayBars[obj.curr[0]].style;
+            const predBarStyle = arrayBars[obj.pred[0]].style;
             setTimeout(() => {
                 currBarStyle.backgroundColor = 'red';
                 predBarStyle.backgroundColor = 'red';
@@ -43,13 +48,13 @@ export class SortingVisualization extends Component {
                 setTimeout(() => {
                     currBarStyle.backgroundColor = '#4169E1';
                     predBarStyle.backgroundColor = '#4169E1';
-                }, 18);
+                }, 17);
                 //cannot access the 'this' keyword in Promise but this works too
                 //enable buttons after (most) animations play
                 if (index + 1 === animations.length){
                     this.enableButtons()
                 }
-            }, index * 18);
+            }, index * 17);
         });
         console.log(animations.length)
     }
@@ -80,13 +85,17 @@ export class SortingVisualization extends Component {
                     <button    
                         className="button"
                         onClick={this.resetArray}>Reset Array</button>
-                    {/* <button    
+                    <button    
                         className="button"
                         onClick={() => {
                             console.log(this.state.array)
-                            const sortedArray = mergeSort(this.state.array)
-                            console.log(sortedArray)
-                        }}>Merge Sort</button> */}
+                            const sorted = mergeSort(this.state.array)
+                            console.log(sorted)
+                            this.handleMergeSort(this.state.array)
+                            // mergeSortHelper(this.state.array)
+                            // const sortedArray = mergeSortHelper(this.state.array)
+                            // console.log(sortedArray)
+                        }}>Merge Sort</button>
                     <button    
                         className="button"
                         onClick={() => this.handleInsertionSort()}>insertion Sort</button>
