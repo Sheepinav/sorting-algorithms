@@ -31,11 +31,15 @@ p{
 }
 
 .button-container{
+    width:100vw;
     display:flex;
+    flex-wrap: wrap;
     flex-direction: row;
+    justify-content: center;
 }
 
 .button {
+    /* flex-grow: 1; */
     background-color: #00BFFF;
     border: 2px solid#00BFFF;
     color: white;
@@ -61,3 +65,16 @@ p{
     color: white;
     cursor: default;
     }
+
+
+@media(max-width:700px){
+    .button {
+        padding: 7px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius:4px;
+        margin:5px;
+        }
+}
